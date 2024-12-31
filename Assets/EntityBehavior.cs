@@ -43,7 +43,7 @@ public class EntityBehavior : MonoBehaviour
 
         SpriteRenderer entitySpriteRenderer = entityObject.AddComponent<SpriteRenderer>();
         CircleCollider2D collider = entityObject.AddComponent<CircleCollider2D>();
-        // collider.isTrigger = true;
+        
         EntityComponent entityComponent = entityObject.AddComponent<EntityComponent>();
         entityComponent.entity = entity;
         Rigidbody2D rb = entityObject.AddComponent<Rigidbody2D>();
@@ -51,10 +51,17 @@ public class EntityBehavior : MonoBehaviour
         rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
 
         
+        
         entitySpriteRenderer.sprite = entity.sprite;
         entitySpriteRenderer.transform.position = GetSpawnPosition();
         entitySpriteRenderer.sortingOrder = 1;
+
+        collider.radius = (Mathf.Max(entitySpriteRenderer.bounds.size.x, entitySpriteRenderer.bounds.size.y) / 2f) - 0.5f;
+        collider.offset = Vector2.zero;
+
         entityObject.transform.localScale = new Vector3(entity.size / 100f, entity.size / 100f, 1f);
+
+        
 
         if (isWandering)
         {

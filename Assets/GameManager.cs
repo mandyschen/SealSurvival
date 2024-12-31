@@ -33,4 +33,5 @@ public class GameManager : MonoBehaviour
         playerManager.ResetSize();
         playerManager.UpdateSize();
     }
+
 }

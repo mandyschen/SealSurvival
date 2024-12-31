@@ -47,7 +47,6 @@ public class PlayerManager : MonoBehaviour
         if (other.CompareTag("Entity"))
         {
             EntityComponent entityComponent = other.GetComponent<EntityComponent>();
-            Debug.Log("Collided with: " + entityComponent.entity.size);
             if (entityComponent.entity.size >= size)
             {
                 gameManager.GameOver("Loss");
