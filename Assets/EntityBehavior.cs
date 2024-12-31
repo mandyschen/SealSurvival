@@ -9,6 +9,11 @@ public class EntityBehavior : MonoBehaviour
     public SpriteRenderer background;
     private Vector2 halfSpriteSize;
 
+    public Vector2 GetHalfSpriteSize()
+    {
+        return halfSpriteSize;
+    }
+
     Vector3 GetSpawnPosition()
     {
         Vector3 minBounds = background.bounds.min;
@@ -38,18 +43,29 @@ public class EntityBehavior : MonoBehaviour
 
         SpriteRenderer entitySpriteRenderer = entityObject.AddComponent<SpriteRenderer>();
         CircleCollider2D collider = entityObject.AddComponent<CircleCollider2D>();
-        collider.isTrigger = true;
+        // collider.isTrigger = true;
         EntityComponent entityComponent = entityObject.AddComponent<EntityComponent>();
         entityComponent.entity = entity;
+        Rigidbody2D rb = entityObject.AddComponent<Rigidbody2D>();
+        rb.bodyType = RigidbodyType2D.Kinematic;
+        rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
 
+        
         entitySpriteRenderer.sprite = entity.sprite;
         entitySpriteRenderer.transform.position = GetSpawnPosition();
         entitySpriteRenderer.sortingOrder = 1;
+        entityObject.transform.localScale = new Vector3(entity.size / 100f, entity.size / 100f, 1f);
 
-        // entitySpriteRenderer.transform.localScale = new Vector3(entity.size, entity.size, 1);
+        if (isWandering)
+        {
+            EntityMovement entityMovement = entityObject.AddComponent<EntityMovement>();
+            entityMovement.background = background;
+            Vector2 spriteWorldSize = entitySpriteRenderer.bounds.size;
+            entityMovement.halfSpriteSize = spriteWorldSize / 2;
+        }
 
-        GameObject text = Instantiate(textPrefab, entitySpriteRenderer.transform.position, Quaternion.identity);
-        text.GetComponent<TMPro.TextMeshPro>().text = $"Size: {entity.size}";
+        GameObject text = Instantiate(textPrefab, entitySpriteRenderer.transform.position + new Vector3(1, 0, 0), Quaternion.identity);
+        text.GetComponent<TMPro.TextMeshPro>().text = entity.size.ToString();
         text.transform.SetParent(entitySpriteRenderer.transform);
         text.GetComponent<TMPro.TextMeshPro>().sortingOrder = 2;
 

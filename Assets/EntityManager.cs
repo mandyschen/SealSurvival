@@ -6,11 +6,17 @@ using UnityEngine;
 public class EntityManager : MonoBehaviour
 {
     public EntityBehavior entityBehavior;
+    private List<GameObject> entities = new List<GameObject>();
+    public List<GameObject> GetEntities()
+    {
+        return entities;
+    }
 
     public void SpawnEntity(bool isWandering)
     {
         GameObject entityObject = entityBehavior.SpawnEntity(isWandering);
         entityObject.SetActive(true);
+        entities.Add(entityObject);
     }
     void SpawnInitialEntities()
     {
@@ -23,7 +29,7 @@ public class EntityManager : MonoBehaviour
             SpawnEntity(true);
         }
     }
-    void Start()
+    public void Start()
     {
         SpawnInitialEntities();
     }

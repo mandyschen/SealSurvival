@@ -12,6 +12,7 @@ public class PlayerManager : MonoBehaviour
     public TextMeshProUGUI sizeText;
     public SpriteRenderer background;
     public EntityManager entityManager;
+    public GameManager gameManager;
     private Rigidbody2D rb;
     private SpriteRenderer spriteRenderer;
     private int size = 5;
@@ -19,8 +20,14 @@ public class PlayerManager : MonoBehaviour
     private Vector2 backgroundMinBounds;
     private Vector2 backgroundMaxBounds;
     private Vector2 halfSpriteSize;
+    private Animator animator;
 
-    void IncreaseSize()
+    public void ResetSize()
+    {
+        size = 5;
+    }
+
+    public void UpdateSize()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         halfSpriteSize = spriteRenderer.bounds.size / 2f;
@@ -28,7 +35,9 @@ public class PlayerManager : MonoBehaviour
         Vector3 minBounds = background.bounds.min;
         Vector3 maxBounds = background.bounds.max;
         backgroundMinBounds = new Vector2(minBounds.x + halfSpriteSize.x, minBounds.y + halfSpriteSize.y);
-        backgroundMaxBounds = new Vector2(maxBounds.x - halfSpriteSize.x, maxBounds.y - halfSpriteSize.y);   
+        backgroundMaxBounds = new Vector2(maxBounds.x - halfSpriteSize.x, maxBounds.y - halfSpriteSize.y);  
+
+        spriteRenderer.transform.localScale = new Vector3(size / 100f, size / 100f, 1f); 
 
         sizeText.text = "Size: " + size;     
     }
@@ -38,22 +47,33 @@ public class PlayerManager : MonoBehaviour
         if (other.CompareTag("Entity"))
         {
             EntityComponent entityComponent = other.GetComponent<EntityComponent>();
-            size += entityComponent.entity.size;
-            Debug.Log("Collected Size: " + entityComponent.entity.size);
-            IncreaseSize();
-            bool isWandering = entityComponent.entity.isWandering;
-            // Debug.Log("boolean iswandering: " + isWandering);
-
-            Destroy(other.gameObject);
-            entityManager.SpawnEntity(isWandering);
+            Debug.Log("Collided with: " + entityComponent.entity.size);
+            if (entityComponent.entity.size >= size)
+            {
+                gameManager.GameOver("Loss");
+            }
+            else if(entityComponent.entity.size + size >= 100)
+            {
+                gameManager.GameOver("Win");
+            }
+            else
+            {
+                animator.Play("FadeToRed", -1, 0f);
+                size += entityComponent.entity.size;
+                UpdateSize();
+                bool isWandering = entityComponent.entity.isWandering;
+                Destroy(other.gameObject);
+                entityManager.SpawnEntity(isWandering);
+            }
         }
     }
     
     void Start()
     {
+        animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        IncreaseSize();
+        UpdateSize();
     }
     
     void Update()

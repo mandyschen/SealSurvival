@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   size: 55
   isWandering: 1
-  sprite: {fileID: 21300000, guid: 61b21e6f59abf4b02875c7bfefc3be05, type: 3}
+  sprite: {fileID: 21300000, guid: 0c0f69aa13bf64005861f54440a846d5, type: 3}
