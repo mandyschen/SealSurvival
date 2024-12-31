@@ -53,6 +53,8 @@ public class PlayerManager : MonoBehaviour
             }
             else if(entityComponent.entity.size + size >= 100)
             {
+                size += entityComponent.entity.size;
+                UpdateSize();
                 gameManager.GameOver("Win");
             }
             else

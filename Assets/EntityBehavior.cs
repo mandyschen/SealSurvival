@@ -7,6 +7,7 @@ public class EntityBehavior : MonoBehaviour
     public Entity entityData;
     public GameObject textPrefab;
     public SpriteRenderer background;
+    public PlayerManager player;
     private Vector2 halfSpriteSize;
 
     public Vector2 GetHalfSpriteSize()
@@ -16,13 +17,31 @@ public class EntityBehavior : MonoBehaviour
 
     Vector3 GetSpawnPosition()
     {
+        Vector3 playerPosition = player.transform.position;
+        float minSafeDistance = 5f;
+
         Vector3 minBounds = background.bounds.min;
         Vector3 maxBounds = background.bounds.max;
 
-        float spawnX = Random.Range(minBounds.x + halfSpriteSize.x, maxBounds.x - halfSpriteSize.x);
-        float spawnY = Random.Range(minBounds.y + halfSpriteSize.y, maxBounds.y - halfSpriteSize.y);
+        Vector3 spawnPosition = Vector3.zero;
 
-        return new Vector3(spawnX, spawnY, 0f);
+        bool isSpawnSafe = false;
+        while (!isSpawnSafe)
+        {
+            float spawnX = Random.Range(minBounds.x + halfSpriteSize.x, maxBounds.x - halfSpriteSize.x);
+            float spawnY = Random.Range(minBounds.y + halfSpriteSize.y, maxBounds.y - halfSpriteSize.y);
+            
+            spawnPosition = new Vector3(spawnX, spawnY, 0f);
+            
+            float distanceToPlayer = Vector3.Distance(spawnPosition, playerPosition);
+
+            if (distanceToPlayer >= minSafeDistance)
+            {
+                isSpawnSafe = true;
+            }
+        }
+
+        return spawnPosition;
     }
 
     public GameObject SpawnEntity(bool isWandering)
@@ -49,8 +68,6 @@ public class EntityBehavior : MonoBehaviour
         Rigidbody2D rb = entityObject.AddComponent<Rigidbody2D>();
         rb.bodyType = RigidbodyType2D.Kinematic;
         rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
-
-        
         
         entitySpriteRenderer.sprite = entity.sprite;
         entitySpriteRenderer.transform.position = GetSpawnPosition();
@@ -60,8 +77,6 @@ public class EntityBehavior : MonoBehaviour
         collider.offset = Vector2.zero;
 
         entityObject.transform.localScale = new Vector3(entity.size / 100f, entity.size / 100f, 1f);
-
-        
 
         if (isWandering)
         {

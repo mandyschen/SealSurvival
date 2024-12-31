@@ -13,22 +13,22 @@ public class GameManager : MonoBehaviour
     {
         if (status == "Loss")
         {
-            winOrLoss.text = "You lose!";
+            winOrLoss.text = "You Lose!";
         }
         else
         {
-            winOrLoss.text = "You win!";
+            winOrLoss.text = "You Win!";
         }
         endPanel.SetActive(true);
-    }
-    public void TryAgain()
-    {
-        endPanel.SetActive(false);
         List<GameObject> entities = entityManager.GetEntities();
         foreach (var entity in entities)
         {
             Destroy(entity);
         }
+    }
+    public void TryAgain()
+    {
+        endPanel.SetActive(false);
         entityManager.Start();
         playerManager.ResetSize();
         playerManager.UpdateSize();
