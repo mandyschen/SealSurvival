@@ -26,7 +26,7 @@ In *Seal Survival*, you take on the role of a seal navigating a dynamic underwat
 
 ## Gameplay Footage
 
-![Gameplay Video](WolverineSoft-App-Video.mov)  
+![Gameplay Footage](WolverineSoft-App-Video.mp4)  
 
 ---
 
