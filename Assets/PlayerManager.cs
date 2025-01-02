@@ -32,14 +32,15 @@ public class PlayerManager : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         halfSpriteSize = spriteRenderer.bounds.size / 2f;
 
+        // Update boundaries taking into consideration new sprite size
         Vector3 minBounds = background.bounds.min;
         Vector3 maxBounds = background.bounds.max;
         backgroundMinBounds = new Vector2(minBounds.x + halfSpriteSize.x, minBounds.y + halfSpriteSize.y);
         backgroundMaxBounds = new Vector2(maxBounds.x - halfSpriteSize.x, maxBounds.y - halfSpriteSize.y);  
 
-        spriteRenderer.transform.localScale = new Vector3(size / 100f, size / 100f, 1f); 
+        spriteRenderer.transform.localScale = new Vector3(size / 100f, size / 100f, 1f); // Resize sprite
 
-        sizeText.text = "Size: " + size;     
+        sizeText.text = "Size: " + size; // Update displayed text
     }
 
     // Describe behavior on collision with an entity
@@ -60,10 +61,10 @@ public class PlayerManager : MonoBehaviour
             }
             else // Otherwise, update size, destroy collided entity, and spawn in new one of the same type
             {
-                animator.Play("FadeToRed", -1, 0f);
+                animator.Play("FadeToRed", -1, 0f); // Play red fade animation upon "eating" an entity
                 size += entityComponent.entity.size;
                 UpdateSize();
-                bool isWandering = entityComponent.entity.isWandering;
+                bool isWandering = entityComponent.entity.isWandering; // Ensure newly spawned entity is same type
                 Destroy(other.gameObject);
                 entityManager.SpawnEntity(isWandering);
             }
@@ -76,7 +77,7 @@ public class PlayerManager : MonoBehaviour
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        UpdateSize();
+        UpdateSize(); // Initialize size and boundaries
     }
     
     // Update player movement
@@ -93,6 +94,7 @@ public class PlayerManager : MonoBehaviour
         {
             Vector3 targetPosition = rb.position + (Vector2)(movementInput.normalized * speed * Time.fixedDeltaTime);
 
+            // Ensures new position is within boundaries
             targetPosition.x = Mathf.Clamp(targetPosition.x, backgroundMinBounds.x, backgroundMaxBounds.x);
             targetPosition.y = Mathf.Clamp(targetPosition.y, backgroundMinBounds.y, backgroundMaxBounds.y);
 

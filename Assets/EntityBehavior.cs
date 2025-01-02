@@ -32,7 +32,8 @@ public class EntityBehavior : MonoBehaviour
 
         // Loops until a valid spawn location is found
         bool isSpawnSafe = false;
-        while (!isSpawnSafe)
+        int buffer = 0; // Ensure there is no infinite loop
+        while (!isSpawnSafe && buffer < 1000)
         {
             // Finds a random location within the bounds of the background
             float spawnX = Random.Range(minBounds.x + halfSpriteSize.x, maxBounds.x - halfSpriteSize.x);
@@ -47,6 +48,13 @@ public class EntityBehavior : MonoBehaviour
             {
                 isSpawnSafe = true;
             }
+
+            buffer++;
+        }
+
+        if (buffer >= 1000)
+        {
+            spawnPosition = new Vector3(0f, 0f, 0f); // Spawn at (0, 0, 0) if no safe spawn point
         }
 
         return spawnPosition;
