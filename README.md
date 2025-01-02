@@ -30,6 +30,22 @@ https://github.com/user-attachments/assets/513a2f50-d547-4fc9-a6a3-a0fe62a66df8
 
 ---
 
+## How to Play
+
+1. Go to Releases.
+2. Click on most recent release.
+3. Download (click on) the top file.
+4. Unzip the file.
+5. Run the application by opening it.
+
+**Troubleshoot:**
+1. Run `cd /path/to/your/app/folder`
+2. Run `chmod +x "nameofapp.app/Contents/MacOS/WolverineSoftApplication"`
+
+Edit path names and application name as needed.
+
+---
+
 ## Credits
 
 Created by Mandy Chen as an application to WolverineSoft Studio.
