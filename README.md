@@ -7,7 +7,7 @@ In *Seal Survival*, you take on the role of a seal navigating a dynamic underwat
 ## Gameplay Overview
 
 1. **Movement**:  
-   Use the `W`, `A`, `S`, and `D` keys or the arrow keys to move your seal around the map. The camera follows your seal from a top-down perspective.
+   Use the `W`, `A`, `S`, and `D` keys or the arrow keys to move your seal around the map.
    
 2. **Growth Mechanic**:  
    - Start as a tiny seal at size **5**.  
