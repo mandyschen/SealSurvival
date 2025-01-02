@@ -1,16 +1,20 @@
+// Describe how wandering entities should move.
+
 using System.Collections;
 using UnityEngine;
 
+// Component that describes how wandering entities move
 public class EntityMovement : MonoBehaviour
 {
-    public float speed = 2f;
-    public float changeDirectionInterval = 3f;
-    public SpriteRenderer background;
-    private Vector2 movementDirection;
-    private Vector2 backgroundMinBounds;
-    private Vector2 backgroundMaxBounds;
-    public Vector2 halfSpriteSize;
+    public float speed = 2f; // Speed of entities
+    public float changeDirectionInterval = 3f; // How long to wait before entities change direction
+    public SpriteRenderer background; // Background to stay in bounds and know when to turn
+    private Vector2 movementDirection; // The angles of movements
+    private Vector2 backgroundMinBounds; // Bounds for movement
+    private Vector2 backgroundMaxBounds; // Bounds for movement
+    public Vector2 halfSpriteSize; // Half the size of the entity sprite
 
+    // Initialize bounds and couroutine for direction
     void Start()
     {
         Vector3 minBounds = background.bounds.min;
@@ -21,6 +25,7 @@ public class EntityMovement : MonoBehaviour
         StartCoroutine(ChangeDirectionRoutine());
     }
 
+    // Update entity movement
     void Update()
     {
         MoveEnemy();
@@ -34,6 +39,7 @@ public class EntityMovement : MonoBehaviour
         transform.position = clampedPosition;
     }
 
+    // Change entity movement direction every interval
     IEnumerator ChangeDirectionRoutine()
     {
         while (true)
@@ -45,6 +51,7 @@ public class EntityMovement : MonoBehaviour
         }
     }
 
+    // Move the entity
     void MoveEnemy()
     {
         transform.Translate(movementDirection * speed * Time.deltaTime, Space.World);

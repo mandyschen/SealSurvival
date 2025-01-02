@@ -1,3 +1,5 @@
+// Manage the player movement and collision.
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,27 +8,30 @@ using UnityEngine.PlayerLoop;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 
+// Manage various aspects of the player
 public class PlayerManager : MonoBehaviour
 {
-    public int speed = 5;
-    public TextMeshProUGUI sizeText;
-    public SpriteRenderer background;
-    public EntityManager entityManager;
-    public GameManager gameManager;
-    private Rigidbody2D rb;
-    private SpriteRenderer spriteRenderer;
-    private int size = 5;
-    private Vector2 movementInput;
-    private Vector2 backgroundMinBounds;
-    private Vector2 backgroundMaxBounds;
-    private Vector2 halfSpriteSize;
-    private Animator animator;
+    public int speed = 5; // Speed of the player
+    public TextMeshProUGUI sizeText; // Text that shows player size
+    public SpriteRenderer background; // Background bounds for the player
+    public EntityManager entityManager; // Manage entities
+    public GameManager gameManager; // Manage the game
+    private Rigidbody2D rb; // Rigidbody2D for player collision
+    private SpriteRenderer spriteRenderer; // SpriteRenderer to depict player
+    private int size = 5; // Size of player
+    private Vector2 movementInput; // Move the player
+    private Vector2 backgroundMinBounds; // Bounds for movement
+    private Vector2 backgroundMaxBounds; // Bounds for movement
+    private Vector2 halfSpriteSize; // Half the size of the player sprite
+    private Animator animator; // Animator for the red fade upon eating
 
+    // Reset size to original 5
     public void ResetSize()
     {
         size = 5;
     }
 
+    // Update size of sprite, boundaries, and text
     public void UpdateSize()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -42,22 +47,23 @@ public class PlayerManager : MonoBehaviour
         sizeText.text = "Size: " + size;     
     }
 
+    // Describe behavior on collision with an entity
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Entity"))
         {
             EntityComponent entityComponent = other.GetComponent<EntityComponent>();
-            if (entityComponent.entity.size >= size)
+            if (entityComponent.entity.size >= size) // If entity size is >= player, game over loss
             {
                 gameManager.GameOver("Loss");
             }
-            else if(entityComponent.entity.size + size >= 100)
+            else if(entityComponent.entity.size + size >= 100) // If updated player size is >= 100, game over win
             {
                 size += entityComponent.entity.size;
                 UpdateSize();
                 gameManager.GameOver("Win");
             }
-            else
+            else // Otherwise, update size, destroy collided entity, and spawn in new one of the same type
             {
                 animator.Play("FadeToRed", -1, 0f);
                 size += entityComponent.entity.size;
@@ -69,6 +75,7 @@ public class PlayerManager : MonoBehaviour
         }
     }
     
+    // Intitialize animator and components and size
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -77,12 +84,14 @@ public class PlayerManager : MonoBehaviour
         UpdateSize();
     }
     
+    // Update player movement
     void Update()
     {
         movementInput.x = Input.GetAxisRaw("Horizontal");
         movementInput.y = Input.GetAxisRaw("Vertical");
     }
 
+    // Update player movement
     void FixedUpdate()
     {
         if (movementInput != Vector2.zero)
