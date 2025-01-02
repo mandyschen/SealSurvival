@@ -1,12 +1,7 @@
 // Manage the player movement and collision.
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using UnityEngine.PlayerLoop;
-using Unity.Mathematics;
-using Unity.VisualScripting;
 
 // Manage various aspects of the player
 public class PlayerManager : MonoBehaviour

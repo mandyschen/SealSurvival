@@ -1,9 +1,6 @@
 // Holds information for generated entity objects.
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 
 // Creates ScriptableObject to hold information
 [CreateAssetMenu(fileName = "NewEntity", menuName = "Entity")]

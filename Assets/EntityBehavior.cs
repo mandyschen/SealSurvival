@@ -1,7 +1,5 @@
 // Describe how entities should be spawned in.
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 // Describes how and where entities should spawn

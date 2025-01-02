@@ -14,6 +14,18 @@ public class EntityMovement : MonoBehaviour
     private Vector2 backgroundMaxBounds; // Bounds for movement
     public Vector2 halfSpriteSize; // Half the size of the entity sprite
 
+    // Change entity movement direction every interval
+    IEnumerator ChangeDirectionRoutine()
+    {
+        while (true)
+        {
+            float angle = Random.Range(0f, 360f) * Mathf.Deg2Rad; // Choose a random angle
+            movementDirection = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
+
+            yield return new WaitForSeconds(changeDirectionInterval);
+        }
+    }
+
     // Initialize bounds and couroutine for direction
     void Start()
     {
@@ -28,7 +40,7 @@ public class EntityMovement : MonoBehaviour
     // Update entity movement
     void Update()
     {
-        MoveEnemy();
+        transform.Translate(movementDirection * speed * Time.deltaTime, Space.World);
 
         Vector3 clampedPosition = new Vector3(
             Mathf.Clamp(transform.position.x, backgroundMinBounds.x, backgroundMaxBounds.x),
@@ -37,23 +49,5 @@ public class EntityMovement : MonoBehaviour
         );
 
         transform.position = clampedPosition;
-    }
-
-    // Change entity movement direction every interval
-    IEnumerator ChangeDirectionRoutine()
-    {
-        while (true)
-        {
-            float angle = Random.Range(0f, 360f) * Mathf.Deg2Rad;
-            movementDirection = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
-
-            yield return new WaitForSeconds(changeDirectionInterval);
-        }
-    }
-
-    // Move the entity
-    void MoveEnemy()
-    {
-        transform.Translate(movementDirection * speed * Time.deltaTime, Space.World);
     }
 }
