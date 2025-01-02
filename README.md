@@ -41,7 +41,7 @@ https://github.com/user-attachments/assets/513a2f50-d547-4fc9-a6a3-a0fe62a66df8
 **Troubleshoot:**
 1. Run `cd /path/to/your/app/folder`
 2. Run `chmod +x "mac_play.app/Contents/MacOS/WolverineSoftApplication"`
-3. Run `xattr -cr /Users/mandychen/Downloads/mac_play.app`
+3. Run `xattr -cr /path/to/your/app/folder/mac_play.app`
 
 Edit path names (*/path/to/your/app/folder*) and application name (*mac_play*) as needed.
 
